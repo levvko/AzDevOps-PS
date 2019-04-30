@@ -38,12 +38,13 @@ function ImportAzDORepository {
         [string] $Source
     )
 
-    New-Item -Path '.\.tempgit' -ItemType Directory
-    Set-Location -Path '.\.tempgit'
+    $here = Get-Location
+    $tempdirPath = "$here\..\.tempgit"
+    New-Item -Path $tempdirPath -ItemType Directory | Set-Location
     git clone $Source
-    Get-ChildItem | Set-Location
+    Get-ChildItem | Foreach-Object { Set-Location $_.FullName }
     git remote set-url origin "https://$User`:$Token@dev.azure.com/$Organization/$Project/_git/$Name"
     git push -u origin --all
-    Set-Location '..'
-    Remove-Item '.\.tempgit' -Force -Recurse
+    Set-Location $here
+    Remove-Item $tempdirPath -Force -Recurse
 }

@@ -42,10 +42,10 @@ Describe "Main and project functions" {
         { Get-AzDOProject -Name $guid } | `
             Should -Throw 'Project not found';
     }
-    It "Creates a project" {
+    It "Creates a project and waits for 10 seconds" {
         New-AzDOProject -Name $guid_proj -Description 'Test project from Pester' -Process 'Agile' | `
             Should -Not -BeNullOrEmpty;
-    }
+        }
     It "Removes a project" {
         Start-Sleep -Seconds 10
         { Remove-AzDOProject -Name $guid_proj } | `
@@ -59,11 +59,11 @@ Describe "Git functions" {
     }
     It "Fails to get a non-existent repository" {
         { Get-AzDORepository -Name $guid } | `
-        Should -Throw 'Repository not found';
+            Should -Throw 'Repository not found';
     }
     It "Creates a new repository" {
-        New-AzDORepository -Name $guid -Source 'git://github.com/azuredevops-environment.git' | `
-        Should -Not -BeNullOrEmpty;
+        New-AzDORepository -Name $guid -Source $PublicRepo | `
+            Should -Not -BeNullOrEmpty;
     }
     It "Gets created repository" {
         Get-AzDORepository -Name $guid | Select-Object -ExpandProperty name | `
@@ -110,9 +110,12 @@ Describe "Build functions" {
             Should -Not -BeNullOrEmpty;
     }
     It "Removes build definitions" {
-        {Remove-AzDOBuildDefinition -name $guid }| `
+        { Remove-AzDOBuildDefinition -name $guid }| `
             Should -Not -Throw;
     }
+}
+Describe "Release functions" {
+
 }
 
 Remove-Module $moduleName

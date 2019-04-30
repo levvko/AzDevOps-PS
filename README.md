@@ -23,6 +23,9 @@
 
 ## Release notes
 
+### v0.0.3
+All functions are updated to correctly accept pipeline input, where applicable.
+
 ### v0.0.2
 **Git repositories** - Added *-Source* parameter to New-AzDORepository for public repo import
 

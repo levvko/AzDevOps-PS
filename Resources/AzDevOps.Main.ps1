@@ -48,35 +48,39 @@ function Get-AzDOProject {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false,ValueFromPipeline = $true)]
-        [String]$Name
+        [String] $Name
     )
 
-    $uri = "https://dev.azure.com/$Organization/_apis/projects"
-    $response = InvokeAzDOAPIRequest -Uri $uri -Method 'Get'
-    if ($Name) {
-        $proj = $response.value | Where-Object {$_.name -eq $Name}
-        if ($proj) {
-            return $proj
+    begin {
+        $uri = "https://dev.azure.com/$Organization/_apis/projects"
+        $response = InvokeAzDOAPIRequest -Uri $uri -Method 'Get'
+    }
+    process {
+        if ($Name) {
+            $proj = $response.value | Where-Object {$_.name -eq $Name}
+            if ($proj) {
+                return $proj
+            } else {
+                Throw 'Project not found'
+            }
         } else {
-            Throw 'Project not found'
+            return $response.value
         }
-    } else {
-        return $response.value
     }
 }
 
 function New-AzDOProject {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $True,ValueFromPipeline = $true)]
-        [String]$Name,
+        [Parameter(Mandatory = $True)]
+        [String] $Name,
 
         [Parameter(Mandatory = $False)]
-        [string]$Description,
+        [string] $Description,
 
         [Parameter(Mandatory = $True)]
         [ValidateSet('Agile', 'Scrum', 'CMMI', 'Basic')]
-        [string]$Process
+        [string] $Process
     )
 
     $uri = "https://dev.azure.com/$Organization/_apis/projects?api-version=5.0"
@@ -104,32 +108,38 @@ function Remove-AzDOProject {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $True,ValueFromPipeline = $true)]
-        [String]$Name
+        [String] $Name
     )
 
-    $projId = Get-AzDOProject -Name $Name | Select-Object -ExpandProperty id;
-    $uri = "https://dev.azure.com/$Organization/_apis/projects/$($projId)?api-version=5.0"
-
-    $response = InvokeAzDOAPIRequest -Uri $uri -Method 'Delete'
+    process {
+        $projId = Get-AzDOProject -Name $Name | Select-Object -ExpandProperty id;
+        $uri = "https://dev.azure.com/$Organization/_apis/projects/$($projId)?api-version=5.0"
+    
+        InvokeAzDOAPIRequest -Uri $uri -Method 'Delete' | Out-Null
+    }
 }
 
 function Get-AzDOProcess {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $False,ValueFromPipeline = $true)]
-        [String]$Name
+        [String] $Name
     )
 
-    $uri = "https://dev.azure.com/$Organization/_apis/process/processes?api-version=5.0";
-    $response = InvokeAzDOAPIRequest -Uri $uri -Method 'Get'
-    if ($Name) {
-        $process = $response.value | Where-Object {$_.name -eq $Name}
-        if ($process) {
-            return $process
+    begin {
+        $uri = "https://dev.azure.com/$Organization/_apis/process/processes?api-version=5.0";
+        $response = InvokeAzDOAPIRequest -Uri $uri -Method 'Get'
+    }
+    process {
+        if ($Name) {
+            $process = $response.value | Where-Object {$_.name -eq $Name}
+            if ($process) {
+                return $process
+            } else {
+                Throw 'Process not found'
+            }
         } else {
-            Throw 'Process not found'
+            return $response.value
         }
-    } else {
-        return $response.value
     }
 }

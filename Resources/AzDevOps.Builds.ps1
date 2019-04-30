@@ -3,7 +3,7 @@ function Get-AzDOBuildDefinition {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false,ValueFromPipeline = $true)]
-        [String]$Name
+        [String] $Name
     )
 
     $uri = "https://dev.azure.com/$Organization/$Project/_apis/build/definitions?api-version=5.0"
@@ -26,7 +26,7 @@ function New-AzDOBuildDefinition {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $True,ValueFromPipeline = $true)]
-        [String]$Name
+        [String] $Name
     )
 
     $uri = "https://dev.azure.com/$Organization/$Project/_apis/build/definitions?api-version=5.0"
@@ -49,7 +49,7 @@ function Remove-AzDOBuildDefinition {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true,ValueFromPipeline = $true)]
-        [String]$Name
+        [String] $Name
     )
 
     #$repoId = Get-AzDORepository -Name $Name | Select-Object -ExpandProperty 'id'
