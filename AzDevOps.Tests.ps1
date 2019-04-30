@@ -106,6 +106,14 @@ Describe "Build functions" {
         Get-AzDOBuildDefinition | `
             Should -Not -BeNullOrEmpty;
     }
+    It "Creates build definition" {
+        New-AzDOBuildDefinition -Name $guid | `
+            Should -Not -BeNullOrEmpty;
+    }
+    It "Removes build definitions" {
+        {Remove-AzDOBuildDefinition -name $guid }| `
+            Should -Not -Throw;
+    }
 }
 
 Remove-Module $moduleName

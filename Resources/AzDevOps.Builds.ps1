@@ -29,7 +29,7 @@ function New-AzDOBuildDefinition {
         [String]$Name
     )
 
-    $uri = "https://dev.azure.com/$Organization/$Project/_apis/git/definitions?api-version=5.0"
+    $uri = "https://dev.azure.com/$Organization/$Project/_apis/build/definitions?api-version=5.0"
     $projectId = Get-AzDOProject -Name $Project | Select-Object -ExpandProperty 'id'
     $requestBody = "{
         'name': '$Name',
@@ -40,9 +40,9 @@ function New-AzDOBuildDefinition {
 
     $requestBody
 
-    $repo = InvokeAzDOAPIRequest -Uri $uri -Method 'Post' -Body $requestBody
+    $buildDef = InvokeAzDOAPIRequest -Uri $uri -Method 'Post' -Body $requestBody
 
-    return $repo
+    return $null
 }
 
 function Remove-AzDOBuildDefinition {
@@ -52,8 +52,9 @@ function Remove-AzDOBuildDefinition {
         [String]$Name
     )
 
-    $repoId = Get-AzDORepository -Name $Name | Select-Object -ExpandProperty 'id'
+    #$repoId = Get-AzDORepository -Name $Name | Select-Object -ExpandProperty 'id'
     $uri = "https://dev.azure.com/$Organization/$Project/_apis/git/definitions/$($repoId)?api-version=5.0"
 
-    InvokeAzDOAPIRequest -Uri $uri -Method 'Delete'
+    #InvokeAzDOAPIRequest -Uri $uri -Method 'Delete'
+    Throw 'function not implemented yet'
 }
