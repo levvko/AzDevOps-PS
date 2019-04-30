@@ -31,10 +31,14 @@ function New-AzDORepository {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $True,ValueFromPipeline = $true)]
-        [String]$Name
+        [String]$Name,
+
+        [Parameter(Mandatory = $False,ValueFromPipeline = $true)]
+        [String]$Source = $null
     )
 
     $uri = "https://dev.azure.com/$Organization/_apis/git/repositories?api-version=5.0"
+    
     $projectId = Get-AzDOProject -Name $Project | Select-Object -ExpandProperty 'id'
     $requestBody = "{
         'name': '$Name',
@@ -44,6 +48,9 @@ function New-AzDORepository {
     }"
 
     $repo = InvokeAzDOAPIRequest -Uri $uri -Method 'Post' -Body $requestBody
+    if ($Source) {
+        ImportAzDORepository -Name $Name -Source $Source
+    }
 
     return $repo
 }

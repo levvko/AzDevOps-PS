@@ -6,7 +6,6 @@ $Token = %YourPersonalAccessToken(PAC)%
 $Org = %YourOrgName%
 $User = %YourPACName%
 $PorjectName = %YourProjectName%
-$Repository = %YourRepoName%
 
 #>
 . "$PSScriptRoot\config.ps1"
@@ -58,17 +57,17 @@ Describe "Git functions" {
         Get-AzDORepository | `
             Should -Not -BeNullOrEmpty;
     }
-    It "Gets defined repository" {
-        Get-AzDORepository -Name $Repository | Select-Object -ExpandProperty name | `
-            Should -Be $Repository;
-    }
     It "Fails to get a non-existent repository" {
         { Get-AzDORepository -Name $guid } | `
-            Should -Throw 'Repository not found';
+        Should -Throw 'Repository not found';
     }
     It "Creates a new repository" {
-        New-AzDORepository -Name $guid | `
-            Should -Not -BeNullOrEmpty;
+        New-AzDORepository -Name $guid -Source 'git://github.com/azuredevops-environment.git' | `
+        Should -Not -BeNullOrEmpty;
+    }
+    It "Gets created repository" {
+        Get-AzDORepository -Name $guid | Select-Object -ExpandProperty name | `
+            Should -Be $guid;
     }
     It "Fails to create a repository with the same name" {
         { New-AzDORepository -Name $guid } | `

@@ -15,20 +15,18 @@
 | Task | Status |
 | --- | ---|
 | Create project | + |
-| Create repository | +/- |
+| Create repository | + |
 | Create build definition | - |
 | Create release definition | - |
 | Trigger build | - |
 | Trigger release | - |
 
-### Nice to have
-- Configuration files.
-- As many API calls implemented as possible.
-
-
 ## Release notes
-### v0.0.1 
 
+### v0.0.2
+**Git repositories** - Added *-Source* parameter to New-AzDORepository for public repo import
+
+### v0.0.1 
 **Projects** - Get, Create and Remove.  
 **Git repositories** - Get, Create, Remove.  
 **Builds** - dummy untested functions.  

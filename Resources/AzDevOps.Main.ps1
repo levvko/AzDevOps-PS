@@ -17,6 +17,8 @@ function Connect-AzDOProject {
             -Headers @{Authorization=("Basic {0}" -f $authInfo)} | Out-Null;
         $Script:organization = $Organization;
         $Script:project = $Project;
+        $Script:token = $Token
+        $Script:user = $User
         Write-Verbose "Successfully connected to project $Project of $Organization";
         $Script:azDOAuthenticated = $True;
         return $True

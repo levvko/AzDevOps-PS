@@ -27,3 +27,23 @@ function InvokeAzDOAPIRequest {
 
     return $response
 }
+
+function ImportAzDORepository {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $True)]
+        [string] $Name,
+
+        [Parameter(Mandatory = $True)]
+        [string] $Source
+    )
+
+    New-Item -Path '.\.tempgit' -ItemType Directory
+    Set-Location -Path '.\.tempgit'
+    git clone $Source
+    Get-ChildItem | Set-Location
+    git remote set-url origin "https://$User`:$Token@dev.azure.com/$Organization/$Project/_git/$Name"
+    git push -u origin --all
+    Set-Location '..'
+    Remove-Item '.\.tempgit' -Force -Recurse
+}
