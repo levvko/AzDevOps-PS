@@ -78,9 +78,9 @@ function New-AzDOProject {
         [Parameter(Mandatory = $False)]
         [string] $Description,
 
-        [Parameter(Mandatory = $True)]
+        [Parameter(Mandatory = $False)]
         [ValidateSet('Agile', 'Scrum', 'CMMI', 'Basic')]
-        [string] $Process
+        [string] $Process = 'Agile'
     )
 
     $uri = "https://dev.azure.com/$Organization/_apis/projects?api-version=5.0"
@@ -100,6 +100,9 @@ function New-AzDOProject {
       }"
 
     $newProj = InvokeAzDOAPIRequest -Uri $uri -Method 'Post' -Body $requestBody
+    
+    Write-Verbose "Switching context to the new project: $Name";
+    $Script:project = $Name;
 
     return $newProj
 }

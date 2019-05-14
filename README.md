@@ -1,7 +1,4 @@
 # PowerShell module for management of Azure DevOps projects
-
-
-
 ## MVP 
 ### MVP flow
 1. Create a project.
@@ -22,6 +19,8 @@
 | Trigger release | - |
 
 ## Release notes
+### v0.0.4
+Added Variable group functions.
 
 ### v0.0.3
 All functions are updated to correctly accept pipeline input, where applicable.

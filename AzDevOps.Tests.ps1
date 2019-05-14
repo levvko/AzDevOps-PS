@@ -53,6 +53,9 @@ Describe "Main and project functions" {
     }
 }
 Describe "Git functions" {
+    #Make sure to switch to the main project
+    Connect-AzDOProject -User $User -Token $Token -Organization $Org -Project $ProjectName
+
     It "Lists repositories" {
         Get-AzDORepository | `
             Should -Not -BeNullOrEmpty;
@@ -100,19 +103,54 @@ Describe "Git functions" {
         } | Should -Not -Throw;
     }
 }
-Describe "Build functions" {
-    It "Lists build definitions" {
-        Get-AzDOBuildDefinition | `
+Describe "Library functions" {
+    #Make sure to switch to the main project
+    Connect-AzDOProject -User $User -Token $Token -Organization $Org -Project $ProjectName
+
+    It "Lists variable groups" {
+        Get-AzDOVarGroup | `
             Should -Not -BeNullOrEmpty;
     }
-    It "Creates build definition" {
-        New-AzDOBuildDefinition -Name $guid | `
+    It "Fails to get a non-existent variable group" {
+        { Get-AzDOVarGroup -Name $guid } | `
+            Should -Throw 'Variable Group not found';
+    }
+    It "Creates a new variable group" {
+        New-AzDOVariable -VariableGroupName $guid -Name 'var1' -Value '12345' | `
             Should -Not -BeNullOrEmpty;
     }
-    It "Removes build definitions" {
-        { Remove-AzDOBuildDefinition -name $guid }| `
+    It "Gets created variable group" {
+        Get-AzDOVarGroup -Name $guid | Select-Object -ExpandProperty name | `
+            Should -Be $guid;
+    }
+    It "Adds plaintext variable" {
+        New-AzDOVariable -VariableGroupName $guid -Name 'var2' -Value '12345' | `
+            Should -Not -BeNullOrEmpty;
+    }
+    It "Adds secret variable" {
+        New-AzDOVariable -VariableGroupName $guid -Name 'var3' -Value '12345' -Secret | `
+            Should -Not -BeNullOrEmpty;
+    }
+    It "Fails to create a variable group with the same name" {
+        { New-AzDOVarGroup -Name $guid } | `
+            Should -Throw;
+    }
+    It "Fails to remove non-existing variable group" {
+        { Remove-AzDOVarGroup -Name $guid_other } | `
+            Should -Throw;
+    }
+    It "Removes variable group" {
+        { Remove-AzDOVarGroup -Name $guid } | `
             Should -Not -Throw;
     }
+    It "Fails to get removed variable group" {
+        { Get-AzDOVarGroup -Name $guid } | `
+            Should -Throw;
+    }
+}
+Describe "Build functions" {
+    #Make sure to switch to the main project
+    
 }
 Describe "Release functions" {
 
