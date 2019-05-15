@@ -1,3 +1,4 @@
 *.pdf
 config.ps1
 .tempgit
+config.json

@@ -9,7 +9,7 @@ function Get-AzDOVarGroup {
     $response = InvokeAzDOAPIRequest -Uri $uri -Method 'Get'
 
     if ($Name) {
-        $varGroup = $response.value | ? {$_.Name -eq $Name}
+        $varGroup = $response.value | Where-Object {$_.Name -eq $Name}
         if ($varGroup) {
             return $varGroup
         } else {
@@ -76,7 +76,6 @@ function New-AzDOVariable {
     return $newVG
 }
 
-#DELETE https://dev.azure.com/{organization}/{project}/_apis/distributedtask/variablegroups/{groupId}?api-version=5.0-preview.1
 function Remove-AzDOVarGroup {
     [CmdletBinding()]
     param (

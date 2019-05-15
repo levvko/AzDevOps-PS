@@ -148,12 +148,24 @@ Describe "Library functions" {
             Should -Throw;
     }
 }
-Describe "Build functions" {
+Describe "Project creation from config" {
     #Make sure to switch to the main project
-    
-}
-Describe "Release functions" {
+    Connect-AzDOProject -User $User -Token $Token -Organization $Org -Project $ProjectName
+    $configPath = Join-Path $PSScriptRoot 'testData\testProj.json'
+    New-AzDOProjectFromConfig -Path $configPath
 
+    It "Created project" {
+        Get-AzDOProject -Name "testProjectFromPester" | `
+            Should -Not -BeNullOrEmpty;
+    }
+    It "Created repo" {
+        Get-AzDORepository -Name "repo" | `
+            Should -Not -BeNullOrEmpty;
+    }
+    
+    Remove-AzDOProject -Name "testProjectFromPester"
 }
+Describe "Build functions" {}
+Describe "Release functions" {}
 
 Remove-Module $moduleName

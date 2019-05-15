@@ -146,3 +146,31 @@ function Get-AzDOProcess {
         }
     }
 }
+
+function New-AzDOProjectFromConfig {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $True, ValueFromPipeline = $True)]
+        [String] $Path
+    )
+
+    $inputObject = Get-Content $Path | ConvertFrom-Json
+
+    New-AzDOProject -Name $inputObject.Name
+    Write-Verbose "10 second delay for project creation"
+    Start-Sleep -Seconds 10
+
+    foreach ($varGroup in $inputObject.variableGroups) {
+        foreach ($azdoVar in $varGroup.variables) {
+            New-AzDOVariable -VariableGroupName $varGroup.name `
+                            -Name $azdoVar.name `
+                            -Value $azdoVar.value `
+                            -isSecret $azdoVar.isSecret
+        }
+    }
+
+    foreach ($repo in $inputObject.repositories) {
+        New-AzDORepository -Name $repo.name -Source $repo.source -Verbose
+    }
+
+}

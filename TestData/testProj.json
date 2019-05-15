@@ -1,0 +1,25 @@
+{
+    "name": "testProjectFromPester",
+    "repositories": [
+        {
+            "name": "repo"
+        }
+    ],
+    "variableGroups": [
+        {
+            "name": "demoEnv",
+            "variables": [
+                {
+                    "name": "secretVar",
+                    "value": "supersecret",
+                    "isSecret": true
+                },
+                {
+                    "name": "plainVar",
+                    "value": "notasecret",
+                    "isSecret": false
+                }
+            ]
+        }
+    ]
+}

@@ -3,22 +3,31 @@
 ### MVP flow
 1. Create a project.
 2. Create a repo as a clone of public one (2 repos: infa and code).
-3. Create release definition for infra and execute it.
-4. Create build definition for code.
-5. Create release definition for code.
+3. Configure Variable Group (for Az connection info)
+4. Create release definition for infra and execute it.
+5. Create build definition for code.
+6. Create release definition for code.
 
 ### MVP Status
 
-| Task | Status |
-| --- | ---|
-| Create project | + |
-| Create repository | + |
-| Create build definition | - |
-| Create release definition | - |
-| Trigger build | - |
-| Trigger release | - |
+| Task                      | Status    |
+| ---                       | ---       |
+| Create project            | +         |
+| Create repository         | +         |
+| Create var group          | +         |
+| Create build definition   | -         |
+| Create release definition | -         |
+| Trigger build             | -         |
+| Trigger release           | -         |
 
 ## Release notes
+### v0.1.0
+Json configuration for project creation. Parameters that can be configured:
+- Project Name
+- Project description
+- Repositories (name and optional source)
+- Variable groups with plaintext and secret variables
+
 ### v0.0.4
 Added Variable group functions.
 
