@@ -4,7 +4,7 @@ The PowerShell module is a wrapper for selected Azure DevOps API calls. It also 
 The main purpose is to quickly setup a project for [Azure DevOps with Azure demo](/Doc/demo.md).
 
 ## Release notes
-### v0.1.3
+### v0.1.1 - v0.1.5
 Working on documentation
 
 ### v0.1.0

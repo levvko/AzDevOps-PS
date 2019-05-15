@@ -9,7 +9,7 @@
 
 ## Comments
 ### Prerequisites
-The demo requires an organization to be already created in Azure DevOps. There should also be a [personal access token configured](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate). After that you should run the `Connect-AzProject` to initiate connection to the organization.
+The demo requires an organization to be already created in Azure DevOps. There should also be a [personal access token configured](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate). After that you should run the `Connect-AzDOProject` to initiate connection to the organization.
 
 ### Create project
 Project creation can be done with `New-AzDOProject` cmdlet ([project functions page](/Doc/projectFunctions.md)) or with configuration files ([configuration files page](/Doc/config.md)). In the case of configuration file usage, repositories and variable groups are created from the same input file.
