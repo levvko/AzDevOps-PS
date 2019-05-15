@@ -1,32 +1,19 @@
 # PowerShell module for management of Azure DevOps projects
-## MVP 
-### MVP flow
-1. Create a project.
-2. Create a repo as a clone of public one (2 repos: infa and code).
-3. Configure Variable Group (for Az connection info)
-4. Create release definition for infra and execute it.
-5. Create build definition for code.
-6. Create release definition for code.
+The PowerShell module is a wrapper for selected Azure DevOps API calls. It also contains a tool to create Azure DevOps projects from JSON configuration files.
 
-### MVP Status
-
-| Task                      | Status    |
-| ---                       | ---       |
-| Create project            | +         |
-| Create repository         | +         |
-| Create var group          | +         |
-| Create build definition   | -         |
-| Create release definition | -         |
-| Trigger build             | -         |
-| Trigger release           | -         |
+The main purpose is to quickly setup a project for [Azure DevOps with Azure demo](/Doc/demo.md).
 
 ## Release notes
+### v0.1.1
+Working on documentation
+
 ### v0.1.0
 Json configuration for project creation. Parameters that can be configured:
-- Project Name
-- Project description
-- Repositories (name and optional source)
-- Variable groups with plaintext and secret variables
+* Project Name
+* Project description
+* Repositories (name and optional source)
+* Variable groups with plaintext and secret variables
+For more details see [help aprticle](/Doc/config.md)
 
 ### v0.0.4
 Added Variable group functions.
