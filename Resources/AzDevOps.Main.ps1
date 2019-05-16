@@ -156,9 +156,20 @@ function New-AzDOProjectFromConfig {
 
     $inputObject = Get-Content $Path | ConvertFrom-Json
 
-    New-AzDOProject -Name $inputObject.Name
-    Write-Verbose "10 second delay for project creation"
-    Start-Sleep -Seconds 10
+    try {
+        New-AzDOProject -Name $inputObject.Name
+        Write-Verbose "10 second delay for project creation"
+        Start-Sleep -Seconds 10
+    }
+    catch {
+        if ($_.ErrorDetails.Message -like '*project already exists*') {
+            Write-Host "Project already exists, skipping project creation"
+            $Script:project = $inputObject.name;
+        } else {
+            Write-Error $_;
+            return
+        }
+    }
 
     foreach ($varGroup in $inputObject.variableGroups) {
         foreach ($azdoVar in $varGroup.variables) {
@@ -170,7 +181,17 @@ function New-AzDOProjectFromConfig {
     }
 
     foreach ($repo in $inputObject.repositories) {
-        New-AzDORepository -Name $repo.name -Source $repo.source -Verbose
+        try {
+            Get-AzDORepository -Name $repo.name | Out-Null
+            Write-Host "Repository $($repo.name) already exists, skipping repository creation"
+        }
+        catch {
+            if ($_.Exception.Message -eq 'Repository not found') {
+                New-AzDORepository -Name $repo.name -Source $repo.source
+            } else {
+                Write-Error $_
+                return
+            }
+        }
     }
-
 }
